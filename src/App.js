@@ -10,26 +10,60 @@ class App extends Component {
     query: "",
     page: 1,
     showModal: false,
+
+    large: null,
+    alt: null,
   };
 
-  handleFormSubmit = query => {
-    this.setState({ query })
-    this.setState({page: 1})
-  }  
-
-  clickLoadMore = (e) => {
-    e.preventDefault()
-    this.setState((prevState) => {return {page: prevState.page + 1}})
+  componentDidMount() {
+    // if (localStorage.getItem)
+    localStorage.setItem("images", "[]");
+    window.addEventListener("click", (e) => {
+      const findImg = e.target.src;
+      const arrImg = JSON.parse(localStorage.getItem("images"));
+      const findImgforModal = arrImg.find((e) => e.webformatURL === findImg);
+      if (findImgforModal) {
+        this.setState({ large: findImgforModal.largeImageURL });
+        this.setState({ alt: findImgforModal.user });
+        this.setState({ showModal: true });
+      }
+    });
   }
 
+  componentDidUpdate(prevProps, prevState) { 
+    // window.scrollTo({
+    //   top: document.documentElement.scrollHeight,
+    //   behavior: "smooth",
+    // });
+  }
+
+  onClose = () => {
+    this.setState({ showModal: false });
+  };
+
+  handleFormSubmit = (query) => {
+    this.setState({ query });
+    this.setState({ page: 1 });
+  };
+
+  clickLoadMore = (e) => {
+    e.preventDefault();
+    this.setState((prevState) => {
+      return { page: prevState.page + 1 };
+    });
+  };
+
+  isViewBtnfoo = () => {};
+
   render() {
-    const { showModal } = this.state;
+    const { showModal, large, alt, query } = this.state;
     return (
       <div className={style.App}>
-        <Searchbar onSubmit={this.handleFormSubmit }/>
+        <Searchbar onSubmit={this.handleFormSubmit} />
         <ImageGallery query={this.state.query} page={this.state.page} />
-        <Button onClick={this.clickLoadMore} />
-        {showModal && <Modal/>}
+
+        {query !== ""  && <Button onClick={this.clickLoadMore} />}
+        {showModal && <Modal src={large} onClose={this.onClose} alt={alt} />}
       </div>
     );
   }
