@@ -30,13 +30,6 @@ class App extends Component {
     });
   }
 
-  componentDidUpdate(prevProps, prevState) { 
-    // window.scrollTo({
-    //   top: document.documentElement.scrollHeight,
-    //   behavior: "smooth",
-    // });
-  }
-
   onClose = () => {
     this.setState({ showModal: false });
   };
@@ -53,8 +46,6 @@ class App extends Component {
     });
   };
 
-  isViewBtnfoo = () => {};
-
   render() {
     const { showModal, large, alt, query } = this.state;
     return (
@@ -62,7 +53,7 @@ class App extends Component {
         <Searchbar onSubmit={this.handleFormSubmit} />
         <ImageGallery query={this.state.query} page={this.state.page} />
 
-        {query !== ""  && <Button onClick={this.clickLoadMore} />}
+        {query !== "" && <Button onClick={this.clickLoadMore} />}
         {showModal && <Modal src={large} onClose={this.onClose} alt={alt} />}
       </div>
     );

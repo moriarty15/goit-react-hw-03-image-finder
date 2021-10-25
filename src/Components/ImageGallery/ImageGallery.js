@@ -1,14 +1,20 @@
 import { Component } from "react";
+import PropTypes from 'prop-types'
 import style from "./ImageGallery.module.css";
 import ImageGalleryItem from "../ImageGalleryItem";
-import Loader from "react-loader-spinner";
-import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
+import LoaderFoo from "../Loader";
 
 export default class ImageGallery extends Component {
   state = {
     isDone: false,
     showSpiner: false,
   };
+
+  static propTypes = {
+    query: PropTypes.string.isRequired,
+    page: PropTypes.number.isRequired,
+  }
+
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.query !== this.props.query) {
       localStorage.setItem("images", "[]");
@@ -33,35 +39,33 @@ export default class ImageGallery extends Component {
         localStorage.setItem("images", JSON.stringify(saveImg));
         this.setState({ showSpiner: false });
         this.setState({ isDone: true });
+        window.scrollTo({
+          top: document.documentElement.scrollHeight,
+          behavior: "smooth",
+        });
       });
   };
 
   render() {
     const images = JSON.parse(localStorage.getItem("images"));
-
     return (
       <>
         {this.state.isDone && (
           <ul className={style.ImageGallery}>
             {images.length !== 0 &&
-              images.map((e) => (
-                <ImageGalleryItem
-                  key={e.id}
-                  src={e.webformatURL}
-                  alt={e.user}
+              images.map(({id, webformatURL, user}) => (
+                <li key={id}>
+                  <ImageGalleryItem
+                  src={webformatURL}
+                  alt={user}
                 />
+                </li>
               ))}
           </ul>
         )}
         {this.state.showSpiner && (
           <div className={style.centred}>
-            <Loader
-              type="Puff"
-              color="#00BFFF"
-              height={100}
-              width={100}
-              timeout={100000} //3 secs
-            />
+            <LoaderFoo />
           </div>
         )}
       </>

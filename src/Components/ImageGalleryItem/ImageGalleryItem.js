@@ -1,8 +1,11 @@
-import style from "./ImageGalleryItem.module.css"
+import PropTypes from "prop-types";
+import style from "./ImageGalleryItem.module.css";
 
 export default function ImageGalleryItem(props) {
-  const {src, alt, key} = props
-    return (<li key={key} className={style.ImageGalleryItem}>
-  <img  src={src} alt={alt} className={style.ImageGalleryItem_image}  />
-</li>)
+  const { src, alt } = props;
+  return <img src={src} alt={alt} className={style.ImageGalleryItem_image} />;
 }
+ImageGalleryItem.propTypes = {
+  src: PropTypes.string.isRequired,
+  alt: PropTypes.string.isRequired,
+};

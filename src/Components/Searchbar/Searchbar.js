@@ -1,21 +1,27 @@
 import { Component } from "react";
-import style from "./Searchbar.module.css"
+import style from "./Searchbar.module.css";
+import PropTypes from 'prop-types'
+
 
 export default class Searchbar extends Component {
   state = {
     query: "",
   };
 
+  static propTypes = {
+    onSubmit: PropTypes.func.isRequired,
+  }
+
   searchItem = (e) => {
-      this.setState({ query: e.currentTarget.value.toLowerCase() });
+    this.setState({ query: e.currentTarget.value.toLowerCase() });
   };
   searchButton = (e) => {
-      e.preventDefault();
-      if (this.state.query.trim() === "") {
-          return
-      }
-      this.props.onSubmit(this.state.query)
-      this.setState({query: ""})
+    e.preventDefault();
+    if (this.state.query.trim() === "") {
+      return;
+    }
+    this.props.onSubmit(this.state.query);
+    this.setState({ query: "" });
   };
   render() {
     return (
