@@ -34,7 +34,6 @@ export default class ImageGallery extends Component {
     )
       .then((r) => r.json())
       .then((hit) => {
-        console.log(hit.total)
         if (hit.total === 0) {
           alert("По данному запросу ничего не найдено, сделайте запрос более специфичным")
         }
