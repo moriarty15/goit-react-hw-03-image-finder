@@ -23,6 +23,8 @@ export default class Searchbar extends Component {
     this.props.onSubmit(this.state.query);
     this.setState({ query: "" });
   };
+
+
   render() {
     return (
       <header className={style.Searchbar}>
@@ -30,7 +32,6 @@ export default class Searchbar extends Component {
           <button
             type="submit"
             className={style.SearchForm_button}
-            onClick={this.searchButton}
           >
             <span className={style.SearchForm_button_label}>Search</span>
           </button>
@@ -39,8 +40,8 @@ export default class Searchbar extends Component {
             onChange={this.searchItem}
             className={style.SearchForm_input}
             type="text"
-            //   autocomplete="off"
-            //   autofocus
+              // autocomplete="off"
+              // autofocus
             placeholder="Search images and photos"
           />
         </form>
