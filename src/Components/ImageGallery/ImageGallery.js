@@ -34,6 +34,10 @@ export default class ImageGallery extends Component {
     )
       .then((r) => r.json())
       .then((hit) => {
+        console.log(hit.total)
+        if (hit.total === 0) {
+          alert("По данному запросу ничего не найдено, сделайте запрос более специфичным")
+        }
         const saveImg = JSON.parse(localStorage.getItem("images"));
         saveImg.push(...hit.hits);
         localStorage.setItem("images", JSON.stringify(saveImg));
@@ -43,6 +47,8 @@ export default class ImageGallery extends Component {
           top: document.documentElement.scrollHeight,
           behavior: "smooth",
         });
+      }).catch(e => {
+        alert('Ой, что-то пошло не так')
       });
   };
 
