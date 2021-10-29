@@ -8,9 +8,9 @@ export default function ImageGallery({ images }) {
       {
         images.length !== 0 && <ul className={style.ImageGallery}>
           {
-            images.map(({ id, webformatURL, user }) => (
+            images.map(({ id, webformatURL }) => (
               <li key={id}>
-                <ImageGalleryItem src={webformatURL} alt={user} />
+                <ImageGalleryItem src={webformatURL} />
               </li>
             ))}
         </ul>

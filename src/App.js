@@ -5,6 +5,7 @@ import ImageGallery from "./Components/ImageGallery";
 import Button from "./Components/Button";
 import Modal from "./Components/Modal";
 import Loader from "./Components/Loader";
+import fetchImages from "./Components/fetchImages";
 
 class App extends Component {
   state = {
@@ -15,7 +16,6 @@ class App extends Component {
     showSpiner: false,
 
     large: null,
-    alt: null,
   };
 
   componentDidMount() {
@@ -26,7 +26,6 @@ class App extends Component {
       );
       if (findImgforModal) {
         this.setState({ large: findImgforModal.largeImageURL });
-        this.setState({ alt: findImgforModal.user });
         this.setState({ showModal: true });
       }
     });
@@ -62,10 +61,8 @@ class App extends Component {
 
   fetchRequest = () => {
     this.setState({ showSpiner: true });
-    fetch(
-      `https://pixabay.com/api/?q=${this.state.query}&page=${this.state.page}&key=23320531-e67f94e9f6229e6b46894ace7&image_type=photo&orientation=horizontal&per_page=12`
-    )
-      .then((r) => r.json())
+
+    fetchImages(this.state.query, this.state.page)
       .then((hit) => {
         if (hit.total === 0) {
           this.setState({ showSpiner: false });
@@ -74,7 +71,10 @@ class App extends Component {
           );
           return;
         }
-        this.setState({ images: [...this.state.images, ...hit.hits] });
+        const arrEx = hit.hits.map(({ id, largeImageURL, webformatURL }) => {
+          return { id, largeImageURL, webformatURL };
+        });
+        this.setState({ images: [...this.state.images, ...arrEx] });
         this.setState({ showSpiner: false });
         window.scrollTo({
           top: document.documentElement.scrollHeight,
@@ -87,14 +87,14 @@ class App extends Component {
   };
 
   render() {
-    const { showModal, large, alt, images, showSpiner } = this.state;
+    const { showModal, large, images, showSpiner } = this.state;
     return (
       <div className={style.App}>
         <Searchbar onSubmit={this.handleFormSubmit} />
         <ImageGallery images={images} />
 
         {images.length >= 12 && <Button onClick={this.clickLoadMore} />}
-        {showModal && <Modal src={large} onClose={this.onClose} alt={alt} />}
+        {showModal && <Modal src={large} onClose={this.onClose} />}
         {showSpiner && (
           <div className={style.centred}>
             <Loader />

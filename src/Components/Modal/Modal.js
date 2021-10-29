@@ -10,7 +10,6 @@ export default class Modal extends Component {
   static propTypes = {
     onClose: PropTypes.func.isRequired,
     src: PropTypes.string.isRequired,
-    alt: PropTypes.string.isRequired,
   }
 
   componentDidMount() {
@@ -32,7 +31,7 @@ export default class Modal extends Component {
     return createPortal(
       <div className={style.Overlay} onClick={this.handleClickBackdrop}>
         <div className={style.Modal} width="300" heigth="300">
-          <img src={this.props.src} alt={this.props.alt} />
+          <img src={this.props.src} alt="images" />
         </div>
       </div>,
       modalRoot
